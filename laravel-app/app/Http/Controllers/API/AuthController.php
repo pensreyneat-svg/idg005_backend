@@ -105,9 +105,7 @@ class AuthController extends Controller
                 'email' => 'Email is already verified.',
             ]);
         }
-
         $user->sendEmailVerificationNotification($request->callback_url);
-
         return response([
             'message' => 'Verification email resent.'
         ], 200);
