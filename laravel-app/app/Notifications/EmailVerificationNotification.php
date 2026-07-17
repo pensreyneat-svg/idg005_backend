@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use URL;
 
-class EmailVerificationNotification extends Notification  implements ShouldQueue
+class EmailVerificationNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

@@ -60,7 +60,7 @@
               </div>
             </div>
           </form>
-           <div class="social-auth-links text-center mt-3 mb-3">
+          <div class="social-auth-links text-center mt-3 mb-3">
             <p>- OR -</p>
             <button @click="googleSignUp()" class="btn btn-block btn-danger">
               <i class="fab fa-google mr-2"></i> Sign up with Google
@@ -85,12 +85,10 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
 import { reactive, ref } from "vue";
 import { apiSignUp, apiSendVerificationEmail } from "@/functions/api/auth";
 import { LoadingModal, MessageModal, CloseModal } from "@/functions/swal";
 import { apiGoogleOAuthRedirect } from "@/functions/api/google-oauth";
-const router = useRouter();
 
 const user = reactive({
   name: "",
@@ -166,6 +164,7 @@ async function sendVerificationEmail() {
 function resetSignedUpEmail() {
   signedUpEmail.value = "";
 }
+
 const googleSignUp = async () => {
   try {
     LoadingModal();

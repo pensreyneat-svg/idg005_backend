@@ -5,7 +5,6 @@ WORKDIR /var/www/html
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
-    curl\
     supervisor \
     libpng-dev \
     libonig-dev \

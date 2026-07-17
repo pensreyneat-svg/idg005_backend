@@ -4,7 +4,6 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use SebastianBergmann\Type\TrueType;
 
 class SendResetPasswordEmailRequest extends FormRequest
 {
@@ -13,7 +12,7 @@ class SendResetPasswordEmailRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return True;
+        return true;
     }
 
     /**
@@ -25,7 +24,7 @@ class SendResetPasswordEmailRequest extends FormRequest
     {
         return [
             'email' => 'required|email|exists:users,email',
-            'callback_url' => 'required|url'
+            'callback_url' => 'required|url',
 
         ];
     }

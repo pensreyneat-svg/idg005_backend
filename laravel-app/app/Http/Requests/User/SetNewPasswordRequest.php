@@ -23,7 +23,7 @@ class SetNewPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'token' => 'required|string',
+            'token' => 'required|string',
             'email' => 'required|email|exists:users,email',
             'password' => 'required|string|min:6|max:10|confirmed'
         ];
