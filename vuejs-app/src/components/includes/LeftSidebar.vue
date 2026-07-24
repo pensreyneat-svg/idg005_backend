@@ -57,11 +57,10 @@
         </div>
       </div>
       <nav class="mt-2">
-        <UserList :users="filteredUsers"></UserList>
 
-        <ChatList v-if="filtering" :chats="filteredChats"></ChatList>
+        <ChatList :chats="chats"></ChatList>
 
-        <ChatList v-else :chats="recentChats"></ChatList>
+        <UserList :users="users"></UserList>
 
         <li v-if="isLoadingMore" class="nav-item text-center text-light p-2">
           <i class="fas fa-spinner fa-spin"></i> Loading...
@@ -81,9 +80,8 @@ import UserList from "@/components/includes/controls/UserList.vue";
 import $ from "jquery";
 
 const userStore = useUserStore();
-const recentChats = ref([]);
-const filteredChats = ref([]);
-const filteredUsers = ref([]);
+const chats = ref([]);
+const users = ref([]);
 
 // Pagination state chat
 const chatCurrentPage = ref(1);
@@ -95,7 +93,6 @@ const userLastPage = ref(1);
 
 const pageSize = ref(50);
 const keyword = ref("");
-const filtering = computed(() => keyword.value.trim() !== "");
 const isLoadingMore = ref(false);
 
 onMounted(() => {
@@ -119,7 +116,7 @@ onMounted(() => {
     isLoadingMore.value = true;
 
     // load more users
-    if (!filtering.value && userCurrentPage.value < userLastPage.value) {
+    if (userCurrentPage.value < userLastPage.value) {
       await generateUsers(keyword.value, userCurrentPage.value + 1);
     }
 
@@ -133,19 +130,17 @@ onMounted(() => {
 });
 
 watch(keyword, async (newKeyword) => {
-  filteredUsers.value = [];
-  filteredChats.value = [];
   if (isLoadingMore.value) {
     return;
   }
-  if (!filtering.value) {
-    return;
-  }
+
+  users.value = [];
+  chats.value = [];
 
   isLoadingMore.value = true;
 
   await Promise.all([
-    generateChats(newKeyword, 1),
+    generateChats(newKeyword, 1,),
     generateUsers(newKeyword, 1),
   ]);
 
@@ -163,11 +158,7 @@ async function generateChats(
     per_page: per_page,
   });
 
-  if (filtering.value) {
-    filteredChats.value = [...filteredChats.value, ...response.data.chats];
-  } else {
-    recentChats.value = [...recentChats.value, ...response.data.chats];
-  }
+  chats.value = [...chats.value, ...response.data.chats];
 
   chatCurrentPage.value = response.data.meta.current_page;
   chatLastPage.value = response.data.meta.last_page;
@@ -184,7 +175,7 @@ async function generateUsers(
     per_page: per_page,
   });
 
-  filteredUsers.value = [...filteredUsers.value, ...response.data.users];
+  users.value = [...users.value, ...response.data.users];
 
   userCurrentPage.value = response.data.meta.current_page;
   userLastPage.value = response.data.meta.last_page;
